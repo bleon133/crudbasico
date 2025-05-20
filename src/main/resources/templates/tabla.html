@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Inventario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .btn-edit {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-add {
+            display: inline-block;
+            margin-bottom: 15px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Inventario de Equipos Informáticos</h2>
+
+    <div class="center">
+        <a class="btn-add" th:href="@{/formularioinventario}">Registrar Nuevo Equipo</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Marca</th>
+                <th>Fecha de Adquisición</th>
+                <th>Precio</th>
+                <th>Estado</th>
+                <th>Observaciones</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${listaInventario}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.nombreequipo}"></td>
+                <td th:text="${item.categoria}"></td>
+                <td th:text="${item.marca}"></td>
+                <td th:text="${#dates.format(item.fechaadquisicion, 'yyyy-MM-dd')}"></td>
+                <td th:text="${item.precio}"></td>
+                <td th:text="${item.estado}"></td>
+                <td th:text="${item.observacion}"></td>
+                <td>
+                    <a th:href="@{'/inventario/editar/' + ${item.id}}" class="btn btn-edit">Editar</a>
+                    <a th:href="@{'/inventario/eliminar/' + ${item.id}}" class="btn btn-delete"
+                       onclick="return confirm('¿Estás seguro de eliminar este equipo?');">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Inventario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        form input[type="text"],
+        form input[type="date"],
+        form input[type="number"],
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        form textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #218838;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Formulario de Inventario</h2>
+    <form th:action="@{/guardarinventario}" th:object="${inventario}" method="post" id="inventarioForm">
+        <label for="nombreequipo">Nombre del equipo:</label>
+        <input type="text" id="nombreequipo" th:field="*{nombreequipo}" required>
+        <span class="error" id="error-nombre"></span>
+
+        <label for="id">ID del equipo:</label>
+        <input type="text" id="id" th:field="*{id}" pattern="[A-Za-z0-9]+" title="Solo caracteres alfanuméricos" required>
+        <span class="error" id="error-id"></span>
+
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" th:field="*{categoria}" required>
+            <option value="" disabled selected>Seleccione una categoría</option>
+            <option value="Laptop">Laptop</option>
+            <option value="PC de escritorio">PC de escritorio</option>
+            <option value="Servidor">Servidor</option>
+            <option value="Impresora">Impresora</option>
+            <option value="Accesorios">Accesorios</option>
+        </select>
+        <span class="error" id="error-categoria"></span>
+
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" th:field="*{marca}" required>
+        <span class="error" id="error-marca"></span>
+
+        <label for="fechaadquisicion">Fecha de adquisición:</label>
+        <input type="date" id="fechaadquisicion" th:field="*{fechaadquisicion}" required>
+        <span class="error" id="error-fecha"></span>
+
+        <label for="precio">Precio ($):</label>
+        <input type="number" id="precio" th:field="*{precio}" min="0" step="0.01" required>
+        <span class="error" id="error-precio"></span>
+
+        <label for="estado">Estado:</label>
+        <select id="estado" th:field="*{estado}" required>
+            <option value="" disabled selected>Seleccione el estado</option>
+            <option value="Nuevo">Nuevo</option>
+            <option value="Buen estado">Buen estado</option>
+            <option value="En Reparación">En Reparación</option>
+            <option value="Obsoleto">Obsoleto</option>
+        </select>
+        <span class="error" id="error-estado"></span>
+
+        <label for="observacion">Observaciones:</label>
+        <textarea id="observacion" th:field="*{observacion}" placeholder="Notas adicionales..."></textarea>
+
+        <button type="submit">Registrar Equipo</button>
+    </form>
+</div>
+<script>
+    document.getElementById('inventarioForm').addEventListener('submit', function(event) {
+        // Validación simple de ejemplo
+        var valid = true;
+        var campos = ['nombreequipo', 'id', 'categoria', 'marca', 'fechaadquisicion', 'precio', 'estado'];
+        campos.forEach(function(campo) {
+            var input = document.getElementById(campo);
+            var errorSpan = document.getElementById('error-' + campo.replace(/adquisicion/, 'fecha'));
+            if (!input.checkValidity()) {
+                errorSpan.textContent = input.title || 'Este campo es obligatorio o tiene un formato inválido.';
+                valid = false;
+            } else {
+                errorSpan.textContent = '';
+            }
+        });
+        if (!valid) {
+            event.preventDefault();
+        }
+    });
+</script>
+</body>
+</html>
